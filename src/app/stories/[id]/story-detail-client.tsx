@@ -67,35 +67,9 @@ export default function StoryDetailClient({ story }: StoryDetailClientProps) {
   const router = useRouter();
   const { toast } = useToast();
   
-  // Base64 encoded short page flip sound - ensures we always have a sound available
-  const pageTurnSoundBase64 = "data:audio/mp3;base64,SUQzAwAAAAAAJlRQRTEAAAAcAAAAU291bmRKYXkuY29tIFNvdW5kIEVmZmVjdHNUWUVSAAAAFQAAAExlZ2FsIENvcHlyaWdodCCpIDIwMTJURFJDAAAAEQAAADIwMTItMDEtMDMgMTA6MDf/+7AAAANwSW5mbwAAAA8AAAQQAAoUWQALFAsACiNZAAsUCwAKLFkACxQLAAo1WQALFAsACj5ZAAsUCwAKR1kACxQLAApQWQALFAsACllZAAsUCwAKYlkACxQLAApseQALFAsACnV5AAsUCwAKfnkACxQAAAAAAAAAAAAAAAA";
-
-  // Function to toggle sound on/off
-  const toggleSound = () => {
-    setSoundEnabled(!soundEnabled);
-  };
-
-  // Initialize audio for page turning sound
+  // Initialize audio for page turning sound (disabled, no sound path)
   useEffect(() => {
-    // Create audio context if browser supports it
-    if (typeof window !== 'undefined' && window.AudioContext) {
-      audioContextRef.current = new AudioContext();
-    }
-
-    // Create audio element for page turning sound
-    if (typeof Audio !== 'undefined') {
-      try {
-        pageTurnSoundRef.current = new Audio(pageTurnSoundBase64);
-        if (pageTurnSoundRef.current) {
-          pageTurnSoundRef.current.volume = 0.5;
-          // Preload the sound
-          pageTurnSoundRef.current.load();
-        }
-      } catch (error) {
-        console.error("Error loading page turn sound:", error);
-      }
-    }
-    
+    // No sound loaded to avoid 404 error
     return () => {
       if (audioContextRef.current) {
         audioContextRef.current.close();
@@ -345,16 +319,9 @@ export default function StoryDetailClient({ story }: StoryDetailClientProps) {
     }
   }, [story]);
 
-  // Function to play page turn sound
+  // Function to play page turn sound (disabled)
   const playPageTurnSound = () => {
-    if (soundEnabled && pageTurnSoundRef.current) {
-      try {
-        pageTurnSoundRef.current.currentTime = 0;
-        pageTurnSoundRef.current.play().catch(err => console.error("Error playing sound:", err));
-      } catch (error) {
-        console.error("Error playing page turn sound:", error);
-      }
-    }
+    // Sound is disabled, do nothing
   };
 
   // Toggle language

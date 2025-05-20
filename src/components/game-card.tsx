@@ -29,8 +29,9 @@ const GameCard: React.FC<GameCardProps> = ({ game }) => {
           <Image
             src={imgError ? `https://picsum.photos/seed/${game.id}/200/120` : `/game-thumbnails/${game.id}.jpg`}
             alt={game.title}
-            layout="fill"
-            objectFit="cover"
+            fill
+            style={{ objectFit: 'cover' }}
+            className="rounded-t-lg"
             data-ai-hint={game.imageHint}
             onError={() => setImgError(true)}
           />

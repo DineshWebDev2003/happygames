@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from '@/components/ui/button';
 import { BookOpen, PlayCircle, Globe, MessageCircle } from 'lucide-react';
 import type { Story } from '@/data/mock-data';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { useRouter } from 'next/navigation';
 
@@ -16,6 +16,7 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, onReadMore }) => {
   const [language, setLanguage] = useState<'english' | 'tamil'>('english');
   const [showMoral, setShowMoral] = useState(false);
   const router = useRouter();
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const handleListen = () => {
     alert(`Playing story: ${story.title} (Audio feature coming soon!)`);
@@ -26,19 +27,37 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, onReadMore }) => {
   };
   
   const handleReadStory = () => {
+    // Play page flip sound
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play();
+    }
     router.push(`/stories/${story.id}`);
   };
 
+  // Bulletproof image source logic with updated path
+  let imageSrc = '/images/placeholder-story.jpg';
+  if (typeof story.imageUrl === 'string' && story.imageUrl.trim()) {
+    imageSrc = story.imageUrl.startsWith('/images/')
+      ? story.imageUrl
+      : `/images${story.imageUrl}`;
+  }
+  if (typeof window !== 'undefined') {
+    console.log('StoryCard imageSrc:', imageSrc);
+  }
+
   return (
     <Card className="shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col">
+      {/* Hidden audio element for page flip sound */}
+      <audio ref={audioRef} src="/sounde/page-flip.mp3" preload="auto" />
       <CardHeader className="p-4">
         <div className="relative w-full h-40 mb-3 rounded-md overflow-hidden bg-secondary/10">
           <Image
-            src={story.imageUrl}
+            src={imageSrc}
             alt={story.title}
-            layout="fill"
-            objectFit="cover"
-            data-ai-hint={story.imageHint}
+            fill
+            style={{ objectFit: 'cover' }}
+            className="rounded-t-lg"
           />
           <Badge className="absolute top-2 right-2 bg-primary/90" variant="secondary">
             {story.category}

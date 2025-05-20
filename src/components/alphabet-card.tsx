@@ -1,8 +1,6 @@
 "use client";
 
 import Image from 'next/image';
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Volume2 } from 'lucide-react';
 import type { Alphabet } from '@/data/mock-data';
 
@@ -10,10 +8,19 @@ interface AlphabetCardProps {
   alphabet: Alphabet;
 }
 
+const letterThemes: Record<string, string> = {
+  A: 'from-pink-200 to-yellow-100',
+  B: 'from-blue-200 to-green-100',
+  C: 'from-yellow-200 to-pink-100',
+  D: 'from-green-200 to-blue-100',
+  E: 'from-purple-200 to-blue-100',
+  F: 'from-orange-200 to-yellow-100',
+  // ...add more for variety or randomize
+};
+
 const AlphabetCard: React.FC<AlphabetCardProps> = ({ alphabet }) => {
   const handleSound = () => {
     if (typeof window !== 'undefined' && window.speechSynthesis) {
-      // Speak both the letter and the word, e.g., 'A is for Apple'
       const text = `${alphabet.letter} is for ${alphabet.word.split(' ').slice(3).join(' ')}`;
       const utter = new window.SpeechSynthesisUtterance(text);
       utter.rate = 0.8;
@@ -23,36 +30,36 @@ const AlphabetCard: React.FC<AlphabetCardProps> = ({ alphabet }) => {
     }
   };
 
+  const theme = letterThemes[alphabet.letter] || 'from-yellow-100 to-blue-100';
+
   return (
-    <Card className="shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col items-center text-center">
-      <CardHeader className="p-4">
-        <CardTitle className="text-6xl font-bold text-primary">{alphabet.letter}</CardTitle>
-      </CardHeader>
-      <CardContent className="p-4 flex-grow flex flex-col items-center justify-center">
-        <div className="relative w-24 h-24 mb-2 rounded-lg overflow-hidden shadow-inner bg-secondary/20">
-          <Image
-            src={alphabet.imageUrl}
-            alt={alphabet.word}
-            layout="fill"
-            objectFit="cover"
-            data-ai-hint={alphabet.imageHint}
-            unoptimized
-          />
-        </div>
-        <p className="text-lg font-semibold text-foreground">{alphabet.word}</p>
-      </CardContent>
-      <CardFooter className="p-4">
-        <Button 
-          variant="outline" 
-          size="icon" 
-          onClick={handleSound} 
-          aria-label={`Hear ${alphabet.letter}`}
-          className="hover:bg-primary/10"
-        >
-          <Volume2 className="h-5 w-5 text-accent" />
-        </Button>
-      </CardFooter>
-    </Card>
+    <div
+      className={`group relative rounded-3xl p-4 bg-gradient-to-br ${theme} border-4 border-white/60 shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:border-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-200 min-h-[320px] flex flex-col items-center text-center`}
+      style={{ minHeight: 320 }}
+    >
+      <div className="absolute top-3 left-3 w-8 h-8 rounded-full bg-white/70 shadow flex items-center justify-center text-lg font-bold text-yellow-500 border-2 border-yellow-300 animate-bounce">
+        {alphabet.letter}
+      </div>
+      <div className="relative w-24 h-24 mb-4 rounded-2xl overflow-hidden shadow-inner bg-white/60 border-2 border-blue-100 group-hover:scale-110 transition-transform">
+        <Image
+          src={alphabet.imageUrl}
+          alt={alphabet.word}
+          fill
+          style={{ objectFit: 'cover' }}
+          className="rounded-t-lg"
+          data-ai-hint={alphabet.imageHint}
+          unoptimized
+        />
+      </div>
+      <p className="text-xl font-extrabold text-blue-900 drop-shadow mb-2">{alphabet.word}</p>
+      <button
+        onClick={handleSound}
+        aria-label={`Hear ${alphabet.letter}`}
+        className="mt-auto p-3 rounded-full bg-gradient-to-br from-blue-200 to-green-200 shadow-lg hover:scale-110 hover:bg-yellow-200 transition-all border-2 border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-300"
+      >
+        <Volume2 className="h-6 w-6 text-blue-700 group-hover:animate-bounce" />
+      </button>
+    </div>
   );
 };
 

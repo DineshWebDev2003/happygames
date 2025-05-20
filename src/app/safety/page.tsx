@@ -7,6 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import { cn } from '@/lib/utils';
 
 export default function SafetyPage() {
   return (
@@ -21,7 +22,7 @@ export default function SafetyPage() {
 
       <Accordion type="single" collapsible className="w-full space-y-4">
         <AccordionItem value="what-is-safety" className="bg-card rounded-lg shadow">
-          <AccordionTrigger className="p-4 text-lg font-semibold hover:no-underline">What is Personal Safety?</AccordionTrigger>
+          <AccordionTrigger className={cn("p-4 text-lg font-semibold hover:no-underline rounded-t-lg bg-gradient-to-br from-pink-100 via-yellow-50 to-yellow-200 border-4 border-transparent border-image: linear-gradient(135deg, var(--tw-gradient-stops)) 1 shadow-2xl transition-all duration-300 hover:shadow-[0_8px_32px_0_rgba(31,38,135,0.37)]")}>What is Personal Safety?</AccordionTrigger>
           <AccordionContent className="p-4 pt-0 text-muted-foreground">
             Personal safety means protecting your body and your feelings. It's about knowing what's okay and what's not okay when someone touches you or talks to you. Your body belongs to you, and you have the right to say "No!" if you feel uncomfortable.
           </AccordionContent>

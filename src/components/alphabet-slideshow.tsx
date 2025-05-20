@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { alphabets } from '@/data/mock-data';
 import { Volume2, Mic, CheckCircle, XCircle, ArrowRight, ArrowLeft, X } from 'lucide-react';
+import confetti from 'canvas-confetti';
 
 interface AlphabetSlideshowProps {
   onExit: () => void;
@@ -12,8 +13,21 @@ export default function AlphabetSlideshow({ onExit }: AlphabetSlideshowProps) {
   const [listening, setListening] = useState(false);
   const [feedback, setFeedback] = useState<'correct' | 'wrong' | null>(null);
   const [waiting, setWaiting] = useState(false);
+  const [animate, setAnimate] = useState<'in' | 'out'>('in');
   const recognitionRef = useRef<any>(null);
   const current = alphabets[index];
+
+  // Confetti on last slide
+  useEffect(() => {
+    if (index === alphabets.length - 1) {
+      confetti({
+        particleCount: 100,
+        spread: 90,
+        origin: { y: 0.6 },
+        zIndex: 9999,
+      });
+    }
+  }, [index]);
 
   // Initialize speech synthesis voices
   useEffect(() => {
@@ -54,9 +68,14 @@ export default function AlphabetSlideshow({ onExit }: AlphabetSlideshowProps) {
           
           setTimeout(() => {
             setFeedback(null);
-            setIndex(i => Math.min(i + 1, alphabets.length - 1));
-            // Speak the next letter
-            speak(alphabets[Math.min(index + 1, alphabets.length - 1)].word);
+            if (index < alphabets.length - 1) {
+              setAnimate('out');
+              setTimeout(() => {
+                setIndex(i => Math.min(i + 1, alphabets.length - 1));
+                setAnimate('in');
+                speak(alphabets[Math.min(index + 1, alphabets.length - 1)].word);
+              }, 350);
+            }
           }, 2000);
         } else {
           setFeedback('wrong');
@@ -88,13 +107,48 @@ export default function AlphabetSlideshow({ onExit }: AlphabetSlideshowProps) {
     speak(current.word);
   }, [current]);
 
+  // Slide animation helpers
+  const handlePrev = () => {
+    setAnimate('out');
+    setTimeout(() => {
+      setIndex(i => Math.max(i - 1, 0));
+      setAnimate('in');
+    }, 350);
+  };
+  const handleNext = () => {
+    setAnimate('out');
+    setTimeout(() => {
+      setIndex(i => Math.min(i + 1, alphabets.length - 1));
+      setAnimate('in');
+    }, 350);
+  };
+
+  // Progress bar
+  const progress = ((index + 1) / alphabets.length) * 100;
+
   return (
     <div className="flex flex-col items-center justify-center min-h-[400px]">
       <button onClick={onExit} className="self-end mb-2 p-2 rounded-full bg-red-100 hover:bg-red-200">
         <X className="w-5 h-5 text-red-600" />
       </button>
-      <div className="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center w-full max-w-xs">
-        <div className="text-6xl font-bold text-primary mb-2">{current.letter}</div>
+      <div className="w-full max-w-xs mb-2">
+        <div className="h-2 rounded-full bg-gray-200 overflow-hidden">
+          <div
+            className="h-2 rounded-full bg-gradient-to-r from-yellow-400 via-pink-400 to-blue-400 transition-all duration-500"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+        <div className="flex justify-center mt-2 gap-1">
+          {alphabets.map((_, i) => (
+            <span
+              key={i}
+              className={`inline-block w-2 h-2 rounded-full transition-all duration-300 ${i === index ? 'bg-blue-400 scale-125' : 'bg-gray-300'}`}
+            />
+          ))}
+        </div>
+      </div>
+      <div className={`bg-gradient-to-br from-yellow-100 via-pink-50 to-blue-100 rounded-2xl shadow-lg p-8 flex flex-col items-center w-full max-w-xs transition-all duration-500 ${animate === 'in' ? 'opacity-100 translate-x-0 scale-105' : 'opacity-0 -translate-x-10 scale-95'} animate-bounce-in`}>
+        <div className="text-6xl font-bold text-primary mb-2 drop-shadow-lg animate-bounce">{current.letter}</div>
         <div className="relative w-40 h-40 mb-2 rounded-lg overflow-hidden shadow-inner bg-secondary/20">
           <img
             src={current.imageUrl}
@@ -103,7 +157,7 @@ export default function AlphabetSlideshow({ onExit }: AlphabetSlideshowProps) {
             style={{ borderRadius: '1rem' }}
           />
         </div>
-        <div className="text-xl font-semibold text-foreground mb-4">{current.word}</div>
+        <div className="text-xl font-semibold text-foreground mb-4 drop-shadow">{current.word}</div>
         <div className="flex gap-4 mb-4">
           <button 
             onClick={() => speak(current.word)} 
@@ -135,7 +189,7 @@ export default function AlphabetSlideshow({ onExit }: AlphabetSlideshowProps) {
         )}
         <div className="flex gap-4 mt-4">
           <button
-            onClick={() => setIndex(i => Math.max(i - 1, 0))}
+            onClick={handlePrev}
             disabled={index === 0}
             className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 disabled:opacity-50 transition-colors"
             title="Previous"
@@ -143,7 +197,7 @@ export default function AlphabetSlideshow({ onExit }: AlphabetSlideshowProps) {
             <ArrowLeft className="w-5 h-5" />
           </button>
           <button
-            onClick={() => setIndex(i => Math.min(i + 1, alphabets.length - 1))}
+            onClick={handleNext}
             disabled={index === alphabets.length - 1}
             className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 disabled:opacity-50 transition-colors"
             title="Next"
@@ -152,6 +206,16 @@ export default function AlphabetSlideshow({ onExit }: AlphabetSlideshowProps) {
           </button>
         </div>
       </div>
+      <style jsx>{`
+        .animate-bounce-in {
+          animation: bounce-in 0.5s;
+        }
+        @keyframes bounce-in {
+          0% { opacity: 0; transform: scale(0.9) translateY(40px); }
+          60% { opacity: 1; transform: scale(1.05) translateY(-10px); }
+          100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+      `}</style>
     </div>
   );
 } 

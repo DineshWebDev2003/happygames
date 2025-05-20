@@ -277,11 +277,10 @@ export default function KidoChatbot() {
     const windowHeight = window.innerHeight;
     const buttonWidth = buttonRef.current?.offsetWidth || 64;
     const buttonHeight = buttonRef.current?.offsetHeight || 64;
-    
+    const margin = 16;
     // Ensure button stays within viewport boundaries
-    const boundedX = Math.min(Math.max(0, newX), windowWidth - buttonWidth);
-    const boundedY = Math.min(Math.max(0, newY), windowHeight - buttonHeight);
-    
+    const boundedX = Math.min(Math.max(margin, newX), windowWidth - buttonWidth - margin);
+    const boundedY = Math.min(Math.max(margin, newY), windowHeight - buttonHeight - margin);
     // Update position state with bounded values
     setButtonPosition({ x: boundedX, y: boundedY });
     
@@ -355,6 +354,39 @@ export default function KidoChatbot() {
     };
   }, [isDragging, dragStart]);
 
+  // --- Chatbot Window Positioning ---
+  let chatStyle: React.CSSProperties = {};
+  if (typeof window !== 'undefined') {
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+    const chatWidth = 320; // w-80 = 320px
+    const chatHeight = 480; // estimated height
+    let chatLeft = buttonPosition.x === 0 ? undefined : buttonPosition.x;
+    let chatTop = buttonPosition.y === 0 ? undefined : buttonPosition.y;
+    let chatRight = buttonPosition.x === 0 ? 32 : undefined;
+    let chatBottom = buttonPosition.y === 0 ? 20 : undefined;
+    // Adjust if overflowing right/bottom
+    if (chatLeft !== undefined && chatLeft + chatWidth > windowWidth) {
+      chatLeft = windowWidth - chatWidth - 16;
+    }
+    if (chatTop !== undefined && chatTop + chatHeight > windowHeight) {
+      chatTop = windowHeight - chatHeight - 16;
+    }
+    chatStyle = {
+      bottom: chatBottom !== undefined ? `${chatBottom}px` : 'auto',
+      right: chatRight !== undefined ? `${chatRight}px` : 'auto',
+      top: chatTop !== undefined ? `${chatTop}px` : 'auto',
+      left: chatLeft !== undefined ? `${chatLeft}px` : 'auto',
+    };
+  } else {
+    chatStyle = {
+      bottom: buttonPosition.y === 0 ? '20px' : 'auto',
+      right: buttonPosition.x === 0 ? '32px' : 'auto',
+      top: buttonPosition.y === 0 ? 'auto' : `${buttonPosition.y}px`,
+      left: buttonPosition.x === 0 ? 'auto' : `${buttonPosition.x}px`,
+    };
+  }
+
   return (
     <>
       {/* Floating Icon Button */}
@@ -421,12 +453,7 @@ export default function KidoChatbot() {
       {open && (
         <div 
           className="fixed z-50 w-80 max-w-full rounded-2xl shadow-2xl bg-gradient-to-br from-green-100 to-blue-100 border border-green-200 animate-fade-in"
-          style={{
-            bottom: `${buttonPosition.y === 0 ? '20px' : 'auto'}`,
-            right: `${buttonPosition.x === 0 ? '32px' : 'auto'}`,
-            top: buttonPosition.y === 0 ? 'auto' : `${buttonPosition.y}px`,
-            left: buttonPosition.x === 0 ? 'auto' : `${buttonPosition.x}px`,
-          }}
+          style={chatStyle}
         >
           <div className="flex items-center gap-2 p-3 border-b border-green-200 relative">
             <img src={kidoAvatar} alt="Kido" className="w-10 h-10 rounded-full border-2 border-white" />
