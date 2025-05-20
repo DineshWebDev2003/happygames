@@ -1,0 +1,74 @@
+/* Animations for speech bubbles */
+@keyframes bounce-short {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.speech-bubble {
+  position: relative;
+}
+
+.speech-bubble:after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  border-width: 15px 15px 0;
+  border-style: solid;
+  border-color: white transparent;
+  display: block;
+  width: 0;
+  filter: drop-shadow(1px 2px 1px rgba(0,0,0,0.1));
+}
+
+.character-speech:after {
+  left: 20px;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  transform: rotate(0deg);
+}
+
+.child-speech:after {
+  right: 20px;
+  left: auto;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  transform: rotate(0deg);
+}
+
+/* Animated background */
+.animated-bg {
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Bounce animation class */
+.animate-bounce-short {
+  animation: bounce-short 1s ease;
+}
+
+/* Add transition to speech bubbles */
+.speech-bubble {
+  transition: all 0.3s ease;
+}
+
+/* Border styling */
+.border-3 {
+  border-width: 3px;
+} 

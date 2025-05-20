@@ -1,0 +1,12 @@
+This directory contains game images:
+
+- alphabet-game.png
+- math-game.png
+- safety-game.png
+- story-game.png
+- robo-teacher.png
+- apple.png
+- ball.png
+- cat.png
+
+Please add appropriate images here. 

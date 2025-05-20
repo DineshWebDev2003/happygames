@@ -1,0 +1,16 @@
+[build]
+  command = "npm run build"
+  publish = ".next/standalone"
+
+[build.environment]
+  NEXT_PUBLIC_SKIP_AI_IN_BUILD = "true"
+  NODE_VERSION = "20"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Handle client-side routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200 
