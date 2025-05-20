@@ -10,19 +10,14 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  output: 'standalone',
   distDir: '.next',
   trailingSlash: true,
   reactStrictMode: false,
-  swcMinify: true,
   env: {
     // Add environment variables to be available at build time
     NEXT_PUBLIC_SKIP_AI_IN_BUILD: 'true',
   },
-  experimental: {
-    // Needed for Netlify deployment of standalone output
-    outputFileTracingRoot: process.cwd(),
-  },
+  outputFileTracingRoot: process.cwd(),
 };
 
 module.exports = nextConfig; 

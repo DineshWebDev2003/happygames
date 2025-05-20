@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google'; // Using Inter for a slightly more child-friendly sans-serif
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
@@ -10,10 +10,16 @@ const inter = Inter({
   variable: '--font-inter' 
 });
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1.0,
+  maximumScale: 1.0,
+  userScalable: false
+};
+
 export const metadata: Metadata = {
   title: 'TN HappyKids Learn - Fun Learning Platform for Kids',
   description: 'TN HappyKids Learn offers interactive alphabet learning, safety education, educational games, audio stories, and AI-powered quizzes for children.',
-  viewport: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
   icons: {
     icon: [
       { url: logoPath.src, sizes: 'any' }
