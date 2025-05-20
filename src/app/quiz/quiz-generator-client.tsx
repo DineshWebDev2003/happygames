@@ -27,7 +27,7 @@ type QuizFormValues = z.infer<typeof quizFormSchema>;
 export default function QuizGeneratorClient() {
   const [quizResult, setQuizResult] = useState<GenerateQuizOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isBrowser, setIsBrowser] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const { toast } = useToast();
   const searchParams = useSearchParams();
 
@@ -40,45 +40,48 @@ export default function QuizGeneratorClient() {
   });
 
   useEffect(() => {
-    // Set isBrowser to true once the component mounts
-    setIsBrowser(true);
+    setMounted(true);
   }, []);
 
   useEffect(() => {
-    // Only run client-side code after component has mounted
-    if (!isBrowser) return;
+    if (!mounted) return;
 
-    if (typeof window !== 'undefined' && window.localStorage) {
-      // Handle story-based quiz
-      if (searchParams.get('source') === 'story') {
-        const storyContent = localStorage.getItem('quizStoryContent');
-        const storyTitle = localStorage.getItem('quizStoryTitle');
-        if (storyContent) {
-          form.setValue('storyContent', storyContent);
-          toast({
-            title: "Story Loaded!",
-            description: `"${storyTitle || 'Selected story'}" content has been pre-filled for quiz generation.`,
-          });
-          // Clean up localStorage after use
-          localStorage.removeItem('quizStoryContent');
-          localStorage.removeItem('quizStoryTitle');
+    const handleInitialLoad = async () => {
+      try {
+        // Handle story-based quiz
+        if (searchParams.get('source') === 'story') {
+          const storyContent = localStorage.getItem('quizStoryContent');
+          const storyTitle = localStorage.getItem('quizStoryTitle');
+          if (storyContent) {
+            form.setValue('storyContent', storyContent);
+            toast({
+              title: "Story Loaded!",
+              description: `"${storyTitle || 'Selected story'}" content has been pre-filled for quiz generation.`,
+            });
+            // Clean up localStorage after use
+            localStorage.removeItem('quizStoryContent');
+            localStorage.removeItem('quizStoryTitle');
+          }
         }
-      }
-      
-      // Handle video-based quiz
-      const videoId = searchParams.get('video');
-      if (videoId) {
-        const videoLesson = videoLessons.find(l => l.id === videoId);
-        if (videoLesson) {
-          // Generate quiz based on video content
-          generateVideoQuiz(videoLesson);
+        
+        // Handle video-based quiz
+        const videoId = searchParams.get('video');
+        if (videoId) {
+          const videoLesson = videoLessons.find(l => l.id === videoId);
+          if (videoLesson) {
+            await generateVideoQuiz(videoLesson);
+          }
         }
+      } catch (error) {
+        console.error('Error during initial load:', error);
       }
-    }
-  }, [searchParams, form, toast, isBrowser]);
+    };
+
+    handleInitialLoad();
+  }, [searchParams, form, toast, mounted]);
 
   const generateVideoQuiz = async (videoLesson: VideoLesson) => {
-    if (!isBrowser) return;
+    if (!mounted) return;
 
     setIsLoading(true);
     setQuizResult(null);
@@ -107,7 +110,7 @@ export default function QuizGeneratorClient() {
   };
 
   const onSubmit: SubmitHandler<QuizFormValues> = async (data) => {
-    if (!isBrowser) return;
+    if (!mounted) return;
 
     setIsLoading(true);
     setQuizResult(null);
@@ -129,6 +132,17 @@ export default function QuizGeneratorClient() {
       setIsLoading(false);
     }
   };
+
+  if (!mounted) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">Loading Quiz Generator...</h2>
+          <p className="text-muted-foreground">Please wait while we prepare your quiz experience.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-2xl mx-auto">

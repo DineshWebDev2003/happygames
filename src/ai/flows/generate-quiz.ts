@@ -34,16 +34,28 @@ const GenerateQuizOutputSchema = z.object({
 export type GenerateQuizOutput = z.infer<typeof GenerateQuizOutputSchema>;
 
 export async function generateQuiz(input: GenerateQuizInput): Promise<GenerateQuizOutput> {
-  // Check if we're in a build environment
-  if (process.env.NODE_ENV === 'production' && process.env.NEXT_PHASE === 'phase-production-build') {
-    console.log('Skipping AI quiz generation during build');
-    // Return a placeholder during build to avoid API calls
+  // Check if we're in a build environment or if the environment variables are not set
+  if (
+    process.env.NODE_ENV === 'production' && 
+    (process.env.NEXT_PHASE === 'phase-production-build' || !process.env.NEXT_PUBLIC_GEMINI_API_KEY)
+  ) {
+    console.log('Using placeholder quiz during build or missing API key');
     return {
       quiz: [
         {
-          question: "This is a placeholder question that will be replaced at runtime",
-          options: ["Option 1", "Option 2", "Option 3", "Option 4"],
-          answer: "Option 1"
+          question: "What is the capital of France?",
+          options: ["London", "Berlin", "Paris", "Madrid"],
+          answer: "Paris"
+        },
+        {
+          question: "Which planet is known as the Red Planet?",
+          options: ["Venus", "Mars", "Jupiter", "Saturn"],
+          answer: "Mars"
+        },
+        {
+          question: "What is 2 + 2?",
+          options: ["3", "4", "5", "6"],
+          answer: "4"
         }
       ]
     };
@@ -70,23 +82,36 @@ const generateQuizFlow = ai.defineFlow(
     inputSchema: GenerateQuizInputSchema,
     outputSchema: GenerateQuizOutputSchema,
   },
-  async input => {
-    // Skip AI processing during build
-    if (process.env.NODE_ENV === 'production' && process.env.NEXT_PHASE === 'phase-production-build') {
+  async (input: GenerateQuizInput) => {
+    // Skip AI processing during build or if API key is missing
+    if (
+      process.env.NODE_ENV === 'production' && 
+      (process.env.NEXT_PHASE === 'phase-production-build' || !process.env.NEXT_PUBLIC_GEMINI_API_KEY)
+    ) {
       return {
         quiz: [
           {
-            question: "This is a placeholder question that will be replaced at runtime",
-            options: ["Option 1", "Option 2", "Option 3", "Option 4"],
-            answer: "Option 1"
+            question: "What is the capital of France?",
+            options: ["London", "Berlin", "Paris", "Madrid"],
+            answer: "Paris"
+          },
+          {
+            question: "Which planet is known as the Red Planet?",
+            options: ["Venus", "Mars", "Jupiter", "Saturn"],
+            answer: "Mars"
+          },
+          {
+            question: "What is 2 + 2?",
+            options: ["3", "4", "5", "6"],
+            answer: "4"
           }
         ]
       };
     }
     
     try {
-      const {output} = await generateQuizPrompt(input);
-      return output!;
+      const result = await generateQuizPrompt(input);
+      return result.output!;
     } catch (error) {
       console.error('Error generating quiz:', error);
       return {
