@@ -38,9 +38,7 @@ const StoryCard: React.FC<StoryCardProps> = ({ story, onReadMore }) => {
   // Bulletproof image source logic with updated path
   let imageSrc = '/images/placeholder-story.jpg';
   if (typeof story.imageUrl === 'string' && story.imageUrl.trim()) {
-    imageSrc = story.imageUrl.startsWith('/images/')
-      ? story.imageUrl
-      : `/images${story.imageUrl}`;
+    imageSrc = story.imageUrl;
   }
   if (typeof window !== 'undefined') {
     console.log('StoryCard imageSrc:', imageSrc);

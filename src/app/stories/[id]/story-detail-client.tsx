@@ -118,7 +118,8 @@ export default function StoryDetailClient({ story }: StoryDetailClientProps) {
         if (moral) {
           wolfStoryScenes.push({
             content: `${language === 'english' ? 'Moral:' : 'நீதி:'}\n\n${moral}`,
-            imageUrl: story.imageUrl
+            contentTamil: `${language === 'english' ? 'Moral:' : 'நீதி:'}\n\n${moral}`,
+            imageUrl: wolfStoryScenes[wolfStoryScenes.length - 1].imageUrl
           });
         }
       
@@ -165,6 +166,155 @@ export default function StoryDetailClient({ story }: StoryDetailClientProps) {
         ];
         
         setStoryPages(lionMouseStoryScenes);
+      }
+      else if (story.id === '3') {
+        const turtleStoryScenes: StoryScene[] = [
+          {
+            content: "Once there was a small village suffering from a terrible drought. The land was dry and cracked, crops had wilted, and the villagers were worried as their wells and pots remained empty.",
+            contentTamil: "ஒரு காலத்தில், கொடிய வறட்சியால் பாதிக்கப்பட்ட ஒரு சிறிய கிராமம் இருந்தது. நிலம் வறண்டு வெடித்திருந்தது, பயிர்கள் வாடியிருந்தன, கிராமத்தினர் தங்கள் கிணறுகளும் பானைகளும் காலியாக இருப்பதால் கவலைப்பட்டனர்.",
+            imageUrl: "/stories/turtle_scene1.jpg",
+            caption: "A drought-stricken village with dry, cracked land and worried villagers looking at the sky with empty pots.",
+            captionTamil: "வறண்டு வெடித்த நிலம் மற்றும் காலியான பானைகளுடன் வானத்தைப் பார்த்து கவலைப்பட்ட கிராமத்தினர்."
+          },
+          {
+            content: "Three young villagers decided to seek help. One ran quickly ahead, eager to find a solution. Another stopped to pick flowers and berries along the way. The third walked calmly, carrying a walking stick.",
+            contentTamil: "மூன்று இளம் கிராமத்தினர் உதவி தேட முடிவு செய்தனர். ஒருவர் விரைவாக முன்னே ஓடினார், தீர்வைக் கண்டுபிடிக்க ஆர்வமாக இருந்தார். மற்றொருவர் வழியில் பூக்களையும் பழங்களையும் எடுக்க நின்றார். மூன்றாமவர் அமைதியாக நடந்து, ஒரு நடைக்கோலை சுமந்து சென்றார்.",
+            imageUrl: "/stories/turtle_scene2.jpg",
+            caption: "Three young villagers starting their journey - one running fast, one picking flowers, and one walking calmly with a stick.",
+            captionTamil: "மூன்று இளம் கிராமத்தினர் தங்கள் பயணத்தைத் தொடங்குகிறார்கள் - ஒருவர் வேகமாக ஓடுகிறார், ஒருவர் பூக்களை எடுக்கிறார், மற்றொருவர் அமைதியாக கோலை ஊன்றி நடக்கிறார்."
+          },
+          {
+            content: "They climbed a hill where they found a wise old turtle sitting peacefully under a tree. The turtle listened to their story and shared his wisdom about patience and perseverance.",
+            contentTamil: "அவர்கள் ஒரு மலையில் ஏறி, அங்கே ஒரு மரத்தின் கீழ் அமைதியாக அமர்ந்திருக்கும் ஞானமுள்ள முதிய ஆமையைக் கண்டனர். ஆமை அவர்களின் கதையைக் கேட்டு, பொறுமை மற்றும் விடாமுயற்சி பற்றிய தன் ஞானத்தைப் பகிர்ந்தது.",
+            imageUrl: "/stories/turtle_scene3.jpg",
+            caption: "The wise old turtle sitting peacefully under a tree on the hilltop, sharing wisdom with the villagers.",
+            captionTamil: "மலை உச்சியில் மரத்தின் கீழ் அமைதியாக அமர்ந்திருக்கும் ஞானமுள்ள முதிய ஆமை, கிராமத்தினருடன் ஞானத்தைப் பகிர்ந்து கொள்கிறது."
+          },
+          {
+            content: "Inspired by the turtle's words, the villagers returned home and worked together to dig deep wells. Their patience and teamwork paid off as they dug deeper into the earth.",
+            contentTamil: "ஆமையின் வார்த்தைகளால் ஈர்க்கப்பட்ட கிராமத்தினர் வீடு திரும்பி, ஒன்றாக சேர்ந்து ஆழமான கிணறுகளை தோண்டினர். அவர்களின் பொறுமையும் குழு முயற்சியும் பலன் தந்தது, பூமியில் ஆழமாக தோண்டினர்.",
+            imageUrl: "/stories/turtle_scene4.jpg",
+            caption: "Villagers working together joyfully, digging deep wells with shovels, showing hope and unity.",
+            captionTamil: "கிராமத்தினர் மகிழ்ச்சியுடன் ஒன்றாக வேலை செய்து, மண்வெட்டிகளால் ஆழமான கிணறுகளை தோண்டி, நம்பிக்கையையும் ஒற்றுமையையும் காட்டுகிறார்கள்."
+          },
+          {
+            content: "Finally, their efforts were rewarded when they found water! The village celebrated with joy as water sprang from the wells, and children played happily in the fresh water.",
+            contentTamil: "இறுதியில், அவர்களின் முயற்சிகள் பலன் தந்தன, தண்ணீரைக் கண்டுபிடித்தனர்! கிணறுகளிலிருந்து தண்ணீர் பீறிட்டெழுந்ததால் கிராமம் மகிழ்ச்சியுடன் கொண்டாடியது, குழந்தைகள் புதிய தண்ணீரில் மகிழ்ச்சியாக விளையாடினர்.",
+            imageUrl: "/stories/turtle_scene5.jpg",
+            caption: "Water springing from the newly dug well, villagers dancing and celebrating, children playing with water.",
+            captionTamil: "புதிதாக தோண்டப்பட்ட கிணற்றிலிருந்து தண்ணீர் பீறிட்டெழுந்து, கிராமத்தினர் நடனமாடி கொண்டாடுகிறார்கள், குழந்தைகள் தண்ணீரில் விளையாடுகிறார்கள்."
+          }
+        ];
+        
+        // Add moral as the last page
+        const moral = language === 'english' ? story.moral : (story.moralTamil || story.moral);
+        if (moral) {
+          turtleStoryScenes.push({
+            content: `${language === 'english' ? 'Moral:' : 'நீதி:'}\n\n${moral}`,
+            contentTamil: `${language === 'english' ? 'Moral:' : 'நீதி:'}\n\n${moral}`,
+            imageUrl: turtleStoryScenes[turtleStoryScenes.length - 1].imageUrl
+          });
+        }
+        
+        setStoryPages(turtleStoryScenes);
+      }
+      else if (story.id === '4') {
+        const bearStoryScenes: StoryScene[] = [
+          {
+            content: "Two Indian boys, one wearing a red t-shirt and the other in blue, walking through a peaceful forest trail during the day, smiling and chatting, birds flying above.",
+            contentTamil: "ஒரு நாள், இரண்டு இந்திய சிறுவர்கள், ஒருவர் சிவப்பு சட்டையும் மற்றவர் நீல சட்டையும் அணிந்து, ஒரு அமைதியான காட்டுப் பாதையில் நடந்து கொண்டிருந்தனர், பறவைகள் மேலே பறக்க, அவர்கள் மகிழ்ச்சியாக பேசிக்கொண்டிருந்தனர்.",
+            imageUrl: "/stories/bearfriends_scene1.jpg",
+            caption: "Two boys walking and chatting in a peaceful forest, birds flying above.",
+            captionTamil: "அமைதியான காட்டில் நடந்து பேசும் இரண்டு சிறுவர்கள், மேலே பறவைகள் பறக்கின்றன."
+          },
+          {
+            content: "Suddenly, a large brown bear appears on the forest path, growling. One of the boys quickly climbs a tree in fear while the other looks scared and confused on the ground.",
+            contentTamil: "திடீரென்று, ஒரு பெரிய பழுப்பு கரடி பாதையில் குரைத்தது. ஒருவன் பயத்தில் விரைவாக ஒரு மரத்தில் ஏறினான், மற்றவன் தரையில் பயந்து குழப்பமாக நின்றான்.",
+            imageUrl: "/stories/bearfriends_scene2.jpg",
+            caption: "A bear appears, one boy climbs a tree in fear, the other is scared on the ground.",
+            captionTamil: "ஒரு கரடி தோன்ற, ஒருவன் மரத்தில் ஏறுகிறான், மற்றவன் தரையில் பயந்து நிற்கிறான்."
+          },
+          {
+            content: "A boy lies very still on the forest floor, pretending to rest calmly with his eyes slightly open, while a big friendly-looking bear sniffs curiously near his face. The other boy watches nervously from the tree above.",
+            contentTamil: "தரையில் இருந்த சிறுவன் அமைதியாக படுத்து, கண்களை சற்று திறந்து அமைதியாக இருக்க நடித்தான், கரடி அவனது முகத்தை ஆர்வமாக நுகர்ந்தது. மற்ற சிறுவன் மரத்தில் இருந்து பதற்றமாக பார்த்தான்.",
+            imageUrl: "/stories/bearfriends_scene3.jpg",
+            caption: "A boy lies still as the bear sniffs him, the other boy watches from the tree.",
+            captionTamil: "ஒரு சிறுவன் அமைதியாக படுத்திருக்க, கரடி அவனை நுகர்கிறது, மற்றவன் மரத்தில் இருந்து பார்க்கிறான்."
+          },
+          {
+            content: "The bear gently leans near the boy's ear as if whispering, then calmly walks away into the forest. The boy still lies still with closed eyes.",
+            contentTamil: "கரடி மெதுவாக சிறுவனின் காதில் ஏதோ சொல்வது போல நெருங்கி, பின்னர் அமைதியாக காட்டில் நடந்து சென்றது. சிறுவன் இன்னும் அமைதியாக படுத்திருந்தான்.",
+            imageUrl: "/stories/bearfriends_scene4.jpg",
+            caption: "The bear whispers to the boy and walks away into the forest.",
+            captionTamil: "கரடி சிறுவனிடம் ஏதோ சொன்னது போல, காட்டில் நடந்து செல்கிறது."
+          },
+          {
+            content: "Both boys are now standing on the path. The boy who lay down is explaining seriously to his friend, who looks guilty. A forest background with warm tones, conveying a lesson about true friendship.",
+            contentTamil: "இருவரும் பாதையில் மீண்டும் நின்றனர். தரையில் படுத்திருந்த சிறுவன், உண்மையான நட்பு பற்றிய பாடத்தை தனது நண்பருக்கு தீவிரமாக விளக்கினான், மற்றவன் குற்றவுணர்வுடன் இருந்தான்.",
+            imageUrl: "/stories/bearfriends_scene5.jpg",
+            caption: "The boys talk about the lesson of true friendship in the forest.",
+            captionTamil: "காட்டில் உண்மையான நட்பு பற்றிய பாடம் பேசும் சிறுவர்கள்."
+          }
+        ];
+        // Add moral as the last page
+        const moral = language === 'english' ? story.moral : (story.moralTamil || story.moral);
+        if (moral) {
+          bearStoryScenes.push({
+            content: `${language === 'english' ? 'Moral:' : 'நீதி:'}\n\n${moral}`,
+            contentTamil: `${language === 'english' ? 'Moral:' : 'நீதி:'}\n\n${moral}`,
+            imageUrl: bearStoryScenes[bearStoryScenes.length - 1].imageUrl
+          });
+        }
+        setStoryPages(bearStoryScenes);
+      }
+      else if (story.id === '5') {
+        const spiderStoryScenes: StoryScene[] = [
+          {
+            content: "A tired and sad king in simple royal clothes sits inside a quiet cave, looking thoughtful and discouraged. Soft rays of light enter the cave, showing a calm, reflective mood.",
+            contentTamil: "சோர்வாகவும் சோகமாகவும் இருக்கும் ஒரு ராஜா எளிய அரச ஆடையில் அமைதியான ஒரு குகையில் அமர்ந்திருக்கிறார், சிந்தனையுடன் மற்றும் மனம் உடைந்த நிலையில். மென்மையான ஒளிக்கதிர்கள் குகையில் புகுந்து அமைதியான சூழலை உருவாக்குகின்றன.",
+            imageUrl: "/stories/persistentspider_scene1.jpg",
+            caption: "The sad king sits in a quiet cave, looking thoughtful.",
+            captionTamil: "சோகமாக குகையில் அமர்ந்திருக்கும் ராஜா."
+          },
+          {
+            content: "A small cartoon spider tries to climb the cave wall using its silk but slips and falls. The king watches curiously.",
+            contentTamil: "ஒரு சிறிய சிலந்தி அதன் இழையைப் பயன்படுத்தி குகை சுவரில் ஏற முயற்சிக்கிறது, ஆனால் வழுக்கி கீழே விழுகிறது. ராஜா ஆர்வமாக அதை கவனிக்கிறார்.",
+            imageUrl: "/stories/persistentspider_scene2.jpg",
+            caption: "The spider tries to climb the wall but slips and falls. The king watches.",
+            captionTamil: "சிலந்தி சுவரில் ஏற முயற்சி செய்து விழுகிறது, ராஜா கவனிக்கிறார்."
+          },
+          {
+            content: "The tiny spider finally reaches the top of the wall on its eighth try and starts spinning a beautiful web. The king watches with admiration and a smile.",
+            contentTamil: "சிறிய சிலந்தி எட்டாவது முறையில் சுவரின் உச்சியை அடைந்து அழகான வலை நெய்யத் தொடங்குகிறது. ராஜா மகிழ்ச்சியுடன் பாராட்டுகிறார்.",
+            imageUrl: "/stories/persistentspider_scene3.jpg",
+            caption: "The spider succeeds and spins a web. The king smiles with admiration.",
+            captionTamil: "சிலந்தி வெற்றி பெற்று வலை நெய்கிறது, ராஜா மகிழ்ச்சியுடன் பார்க்கிறார்."
+          },
+          {
+            content: "The king stands proudly at the entrance of the cave, holding a map or sword, filled with renewed energy and determination. The sky is bright, birds fly above, symbolizing hope and a new beginning.",
+            contentTamil: "ராஜா குகை வாசலில் நின்று, புதிய உற்சாகத்துடன் மற்றும் உறுதியுடன், ஒரு வரைபடம் அல்லது வாளை பிடித்து நிற்கிறார். வானம் பிரகாசமாக உள்ளது, மேலே பறவைகள் பறக்கின்றன, இது புதிய நம்பிக்கையையும் தொடக்கத்தையும் குறிக்கிறது.",
+            imageUrl: "/stories/persistentspider_scene4.jpg",
+            caption: "The inspired king stands at the cave entrance, ready for a new beginning.",
+            captionTamil: "புதிய உற்சாகத்துடன் குகை வாசலில் நிற்கும் ராஜா."
+          },
+          {
+            content: "The king returns to his kingdom, welcomed by his people. He shares the lesson he learned from the persistent spider: never give up, no matter how many times you fail. The kingdom celebrates his return and new wisdom.",
+            contentTamil: "ராஜா தனது ராஜ்யத்திற்கு திரும்பி, மக்களால் வரவேற்கப்படுகிறார். சிலந்தியின் விடாமுயற்சியிலிருந்து கற்ற பாடத்தை அவர் அனைவருடனும் பகிர்கிறார்: எத்தனை முறை தோல்வியடைந்தாலும் ஒருபோதும் விடாமுயற்சி கைவிடக்கூடாது. அவரது திரும்பும் மற்றும் புதிய ஞானத்தை ராஜ்யம் கொண்டாடுகிறது.",
+            imageUrl: "/stories/persistentspider_scene5.jpg",
+            caption: "The king is welcomed back to his kingdom, sharing the lesson of perseverance.",
+            captionTamil: "ராஜா தனது ராஜ்யத்திற்கு திரும்பி, விடாமுயற்சி பாடத்தை பகிர்கிறார்."
+          }
+        ];
+        // Add moral as the last page
+        const moral = language === 'english' ? story.moral : (story.moralTamil || story.moral);
+        if (moral) {
+          spiderStoryScenes.push({
+            content: `${language === 'english' ? 'Moral:' : 'நீதி:'}\n\n${moral}`,
+            contentTamil: `${language === 'english' ? 'Moral:' : 'நீதி:'}\n\n${moral}`,
+            imageUrl: spiderStoryScenes[spiderStoryScenes.length - 1].imageUrl
+          });
+        }
+        setStoryPages(spiderStoryScenes);
       }
       else {
         // For other stories, create scenes from the single content
